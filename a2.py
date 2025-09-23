@@ -28,7 +28,7 @@ def match(pattern: List[str], source: List[str]) -> List[str]:
 
         # 1) if we reached the end of the pattern but not source
         if pind >= len(pattern) and sind < len(source):
-            print("end of pattern")
+            # print("end of pattern")
             return None
         # 2) if the current thing in the pattern is a %
         # WARNING: this condition contains the bulk of the code for the assignment
@@ -38,15 +38,24 @@ def match(pattern: List[str], source: List[str]) -> List[str]:
             if pind == len(pattern) - 1:
                 combined = " ".join(source[sind:])
                 result.append(combined)
-                print(result)
+                # print(result)
                 return result
+            else:
+                pind += 1
+                slocation = sind
+                while pattern[pind] != source[sind]:
+                    sind += 1
+                    if sind == len(source):
+                        return None
+                # print(sind, slocation)
+                result.append(" ".join(source[slocation:sind]))
+                # print(result)
 
             # Two situations, % is last, and % is not last
-            
 
         # 3) if we reached the end of the source but not the pattern
         elif sind >= len(source) and pind < len(pattern):
-            print("end of source")
+            # print("end of source")
             return None
         # 4) if the current thing in the pattern is an _
         elif pattern[pind] == "_":
@@ -56,28 +65,28 @@ def match(pattern: List[str], source: List[str]) -> List[str]:
         # 5) if the current thing in the pattern is the same as the current thing in the
         # source
         elif pattern[pind] == source[sind]:
-            print(pattern[pind],source[sind])
+            # print(pattern[pind],source[sind])
             pind += 1
             sind += 1
         # 6) else : this will happen if none of the other conditions are met it
         # indicates the current thing it pattern doesn't match the current thing in
         # source
         else:
-            print(pattern[pind] + " " + source[sind])
-            print("no match")
+            # print(pattern[pind] + " " + source[sind])
+            # print("no match")
             return None
-    print("successful match")
+    # print("successful match")
     
     return result
 
 
 if __name__ == "__main__":
-    # assert match(["x", "y", "z"], ["x", "y", "z"]) == [], "test 1 failed"
-    # assert match(["x", "z", "z"], ["x", "y", "z"]) == None, "test 2 failed"
-    # assert match(["x", "y"], ["x", "y", "z"]) == None, "test 3 failed"
-    # assert match(["x", "y", "z", "z"], ["x", "y", "z"]) == None, "test 4 failed"
-    # assert match(["x", "_", "z"], ["x", "y", "z"]) == ["y"], "test 5 failed"
-    # assert match(["x", "_", "_"], ["x", "y", "z"]) == ["y", "z"], "test 6 failed"
+    assert match(["x", "y", "z"], ["x", "y", "z"]) == [], "test 1 failed"
+    assert match(["x", "z", "z"], ["x", "y", "z"]) == None, "test 2 failed"
+    assert match(["x", "y"], ["x", "y", "z"]) == None, "test 3 failed"
+    assert match(["x", "y", "z", "z"], ["x", "y", "z"]) == None, "test 4 failed"
+    assert match(["x", "_", "z"], ["x", "y", "z"]) == ["y"], "test 5 failed"
+    assert match(["x", "_", "_"], ["x", "y", "z"]) == ["y", "z"], "test 6 failed"
     assert match(["%"], ["x", "y", "z"]) == ["x y z"], "test 7 failed"
     assert match(["x","%"], ["x", "y", "z","a","b"]) == ["y z a b"], "test extra failed"
     assert match(["x", "%", "z"], ["x", "y", "z"]) == ["y"], "test 8 failed"
